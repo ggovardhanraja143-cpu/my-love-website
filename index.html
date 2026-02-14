@@ -103,8 +103,25 @@ p {
   }
 }
 
-</style>
+.slideshow-container {
+  max-width: 700px;
+  margin: 30px auto;
+  position: relative;
+}
 
+.slide {
+  width: 100%;
+  border-radius: 15px;
+  display: none;
+  animation: fade 1.5s;
+}
+
+@keyframes fade {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+ 
+</style>
 
 </head>
 
@@ -131,6 +148,15 @@ p {
   <h2 style="text-align:center; color:#ff4d6d; margin-top:40px;">
 💍 Countdown to Our Marriage 💍
 </h2>
+
+  <h2 style="text-align:center; color:#ff4d6d; margin-top:40px;">
+📸 Our Beautiful Memories 📸
+</h2>
+
+<div class="slideshow-container">
+  <img src="photo1.jpg" class="slide">
+  <img src="photo2.jpg" class="slide">
+</div>
 
 <div id="countdown" style="text-align:center; font-size:22px; margin-top:10px; font-weight:bold;"></div>
 
@@ -184,6 +210,10 @@ function checkPassword() {
       });
     }
 
+ showSlides();
+
+}
+    
   } else {
     alert("Wrong password 😜");
   }
@@ -222,6 +252,24 @@ setInterval(function() {
       "We Are Married 💍❤️";
   }
 }, 1000);
+
+// Slideshow
+var slideIndex = 0;
+
+function showSlides() {
+  var slides = document.getElementsByClassName("slide");
+
+  for (var i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+
+  slideIndex++;
+  if (slideIndex > slides.length) { slideIndex = 1; }
+
+  slides[slideIndex - 1].style.display = "block";
+
+  setTimeout(showSlides, 3000);
+}
 
 </script>
 
