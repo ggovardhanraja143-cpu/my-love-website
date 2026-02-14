@@ -122,6 +122,23 @@ p {
   0% { transform: translateY(0); opacity: 1; }
   100% { transform: translateY(-900px); opacity: 0; }
 }
+
+/* Surprise Message */
+#surpriseMessage {
+  display: none;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff66a3;
+  animation: glow 1.5s infinite alternate;
+}
+
+/* Explosion animation */
+@keyframes explode {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
 </style>
 </head>
 
@@ -179,6 +196,18 @@ p {
 నీ వర్ధన్ 💞
 </p>
 
+<div style="text-align:center; margin-top:40px;">
+  <button onclick="loveExplosion()" style="font-size:20px; padding:15px 30px; background:#ff2e63;">
+    💖 Open My Heart 💖
+  </button>
+</div>
+
+<div id="surpriseMessage">
+💕 You Are My Forever, My Future, My Everything 💕<br>
+💍 Happy Valentine’s Day Babydoll 💍<br>
+I Love You Beyond Words ❤️🔥
+</div>
+
 </div>
 
 <audio id="bgMusic" loop preload="auto">
@@ -235,6 +264,23 @@ setInterval(function() {
   document.body.appendChild(heart);
   setTimeout(function() { heart.remove(); }, 6000);
 }, 400);
+
+function loveExplosion() {
+  document.getElementById("surpriseMessage").style.display = "block";
+
+  for (let i = 0; i < 30; i++) {
+    let boom = document.createElement("div");
+    boom.innerHTML = "💖";
+    boom.style.position = "fixed";
+    boom.style.left = "50%";
+    boom.style.top = "50%";
+    boom.style.fontSize = (Math.random() * 30 + 20) + "px";
+    boom.style.transform = "translate(-50%, -50%)";
+    boom.style.animation = "explode 1s ease-out forwards";
+    document.body.appendChild(boom);
+    setTimeout(() => boom.remove(), 1000);
+  }
+}
 </script>
 
 </body>
