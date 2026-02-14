@@ -126,7 +126,8 @@ p {
 </p>
 
 </div>
-<audio id="bgMusic" loop>
+  
+<audio id="bgMusic" loop preload="auto">
   <source src="song.mp3" type="audio/mpeg">
 </audio>
 
@@ -137,12 +138,15 @@ function checkPassword() {
   if (pass === "babydoll143") {
     document.getElementById("login").style.display = "none";
     document.getElementById("content").style.display = "block";
-    document.getElementById("bgMusic").play();
+
+    var music = document.getElementById("bgMusic");
+    music.muted = false;
+    music.volume = 1;
+    music.play();
   } else {
     alert("Wrong password 😜");
   }
 }
-
 
 // Floating Hearts
 setInterval(function() {
