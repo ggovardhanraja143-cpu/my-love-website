@@ -103,6 +103,13 @@ p {
 <h1>నా ప్రియమైన బేబీ డాల్ ❤️</h1>
 
 <p>
+  
+  <h2 style="text-align:center; color:#ff4d6d; margin-top:40px;">
+💍 Countdown to Our Marriage 💍
+</h2>
+
+<div id="countdown" style="text-align:center; font-size:22px; margin-top:10px; font-weight:bold;"></div>
+
 ఈ రోజు వాలెంటైన్స్ డే… కానీ నువ్వు దూరంగా ఉండటం వల్ల నా హృదయం కొంచెం ఖాళీగా ఉంది. అయినా కూడా ప్రతి రోజు లాగే నువ్వు నా మనసులోనే ఉన్నావు 💕
 
 నువ్వు ఎంత బిజీగా ఉన్నా కూడా నా కోసం టైమ్ కేటాయిస్తావు… అది నాకు ప్రపంచం అంత విలువైనది. నీ ఒక్క మెసేజ్, నీ ఒక్క కాల్ – నా రోజంతా సంతోషంగా మార్చేస్తాయి 📱💖
@@ -171,6 +178,27 @@ setInterval(function() {
     heart.remove();
   }, 6000);
 }, 500);
+
+  // Marriage Countdown
+var weddingDate = new Date("2027-12-31T00:00:00").getTime();
+
+setInterval(function() {
+  var now = new Date().getTime();
+  var distance = weddingDate - now;
+
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (distance > 0) {
+    document.getElementById("countdown").innerHTML =
+      days + " Days ❤️ " + hours + " Hours ❤️ " + minutes + " Minutes";
+  } else {
+    document.getElementById("countdown").innerHTML =
+      "We Are Married 💍❤️";
+  }
+}, 1000);
+
 </script>
 
 
