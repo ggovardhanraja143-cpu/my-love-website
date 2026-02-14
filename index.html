@@ -128,7 +128,7 @@ p {
 </div>
   
 <audio id="bgMusic" loop preload="auto">
-  <source src="song.mp3" type="audio/mpeg">
+  <source src="./song.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -140,9 +140,19 @@ function checkPassword() {
     document.getElementById("content").style.display = "block";
 
     var music = document.getElementById("bgMusic");
-    music.muted = false;
     music.volume = 1;
-    music.play();
+    music.muted = false;
+
+    var playPromise = music.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(function() {
+        console.log("Music started");
+      }).catch(function(error) {
+        console.log("Autoplay blocked:", error);
+      });
+    }
+
   } else {
     alert("Wrong password 😜");
   }
