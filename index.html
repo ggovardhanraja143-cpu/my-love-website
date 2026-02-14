@@ -15,10 +15,7 @@ body {
   overflow-x: hidden;
 }
 
-/* LOGIN */
-#login {
-  margin-top: 200px;
-}
+#login { margin-top: 200px; }
 
 button {
   padding: 12px 25px;
@@ -30,7 +27,6 @@ button {
   cursor: pointer;
 }
 
-/* MAIN CONTENT */
 #content {
   display: none;
   max-width: 900px;
@@ -40,9 +36,10 @@ button {
   background: rgba(0,0,0,0.7);
   box-shadow: 0 0 40px #ff0055;
   text-align: left;
+  position: relative;
+  z-index: 2;
 }
 
-/* GLOW NAME */
 .glow-name {
   text-align: center;
   font-size: 40px;
@@ -56,7 +53,6 @@ button {
   to { text-shadow: 0 0 30px #ff0055, 0 0 60px #ff2e63; }
 }
 
-/* Banner */
 .valentine-banner {
   text-align: center;
   font-size: 30px;
@@ -71,46 +67,18 @@ button {
   100% { transform: scale(1); color: #ff0055; }
 }
 
-/* Headings */
-h1, h2 {
-  text-align: center;
-  color: #ff4d88;
-}
+h1, h2 { text-align: center; color: #ff4d88; }
 
-/* Letter */
-p {
-  font-size: 20px;
-  line-height: 1.9;
-  white-space: pre-line;
-}
+p { font-size: 20px; line-height: 1.9; white-space: pre-line; }
 
-/* Countdown */
-#countdown {
-  font-size: 22px;
-  font-weight: bold;
-  margin: 15px 0;
-  text-align: center;
-}
+#countdown { font-size: 22px; font-weight: bold; margin: 15px 0; text-align: center; }
 
-/* Slideshow */
-.slideshow-container {
-  max-width: 700px;
-  margin: 30px auto;
-}
+.slideshow-container { max-width: 700px; margin: 30px auto; }
 
-.slide {
-  width: 100%;
-  border-radius: 15px;
-  display: none;
-  animation: fade 1.5s;
-}
+.slide { width: 100%; border-radius: 15px; display: none; animation: fade 1.5s; }
 
-@keyframes fade {
-  from { opacity: 0.3; }
-  to { opacity: 1; }
-}
+@keyframes fade { from { opacity: 0.3; } to { opacity: 1; } }
 
-/* Floating Hearts */
 .heart {
   position: fixed;
   bottom: -10px;
@@ -123,26 +91,51 @@ p {
   100% { transform: translateY(-900px); opacity: 0; }
 }
 
-/* Surprise Message */
-#surpriseMessage {
-  display: none;
-  text-align: center;
-  margin-top: 30px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #ff66a3;
-  animation: glow 1.5s infinite alternate;
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Explosion animation */
-@keyframes explode {
-  0% { transform: scale(0); opacity: 1; }
-  100% { transform: scale(3); opacity: 0; }
+/* Proposal Popup */
+#proposalBox {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #000;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px #ff0055;
+  text-align: center;
+  z-index: 999;
+}
+
+/* Ring Animation */
+.ring {
+  position: fixed;
+  font-size: 60px;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  animation: flyRing 2s ease-out forwards;
+  z-index: 1000;
+}
+
+@keyframes flyRing {
+  0% { top: 100%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 40%; opacity: 1; }
 }
 </style>
 </head>
 
 <body>
+
+<canvas id="fireworks"></canvas>
 
 <div id="login">
   <h2>🔐 Enter Our Secret Password 💕</h2>
@@ -153,19 +146,13 @@ p {
 
 <div id="content">
 
-<div class="valentine-banner">
-💖 Happy Valentine's Day Babydoll 💖
-</div>
-
-<div class="glow-name">
-❤️ Sravanthi ❤️
-</div>
+<div class="valentine-banner">💖 Happy Valentine's Day Babydoll 💖</div>
+<div class="glow-name">❤️ Sravanthi ❤️</div>
 
 <h2>💍 Countdown to Our Marriage 💍</h2>
 <div id="countdown"></div>
 
 <h2>📸 Our Beautiful Memories 📸</h2>
-
 <div class="slideshow-container">
   <img src="photo1.jpg" class="slide">
   <img src="photo2.jpg" class="slide">
@@ -196,18 +183,12 @@ p {
 నీ వర్ధన్ 💞
 </p>
 
-<div style="text-align:center; margin-top:40px;">
-  <button onclick="loveExplosion()" style="font-size:20px; padding:15px 30px; background:#ff2e63;">
-    💖 Open My Heart 💖
-  </button>
 </div>
 
-<div id="surpriseMessage">
-💕 You Are My Forever, My Future, My Everything 💕<br>
-💍 Happy Valentine’s Day Babydoll 💍<br>
-I Love You Beyond Words ❤️🔥
-</div>
-
+<div id="proposalBox">
+  <h2>💍 Will You Marry Me? 💍</h2>
+  <button onclick="yesClicked()">Yes ❤️</button>
+  <button id="noBtn" onmouseover="moveNo()">No 😜</button>
 </div>
 
 <audio id="bgMusic" loop preload="auto">
@@ -216,15 +197,34 @@ I Love You Beyond Words ❤️🔥
 
 <script>
 var slideIndex = 0;
+var canvas = document.getElementById("fireworks");
+var ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function startFireworks() {
+  setInterval(function() {
+    ctx.fillStyle = "rgba(0,0,0,0.1)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "hsl(" + Math.random()*360 + ",100%,50%)";
+    ctx.beginPath();
+    ctx.arc(Math.random()*canvas.width,
+            Math.random()*canvas.height,
+            Math.random()*5+2, 0, Math.PI*2);
+    ctx.fill();
+  },100);
+}
 
 function checkPassword() {
-  var pass = document.getElementById("password").value;
-
-  if (pass === "babydoll143") {
+  if (document.getElementById("password").value === "babydoll143") {
     document.getElementById("login").style.display = "none";
     document.getElementById("content").style.display = "block";
     document.getElementById("bgMusic").play();
     showSlides();
+    startFireworks();
+    setTimeout(() => {
+      document.getElementById("proposalBox").style.display = "block";
+    }, 5000);
   } else {
     alert("Wrong password 😜");
   }
@@ -232,28 +232,30 @@ function checkPassword() {
 
 function showSlides() {
   var slides = document.getElementsByClassName("slide");
-  for (var i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
+  for (var i = 0; i < slides.length; i++) slides[i].style.display = "none";
   slideIndex++;
-  if (slideIndex > slides.length) { slideIndex = 1; }
+  if (slideIndex > slides.length) slideIndex = 1;
   slides[slideIndex - 1].style.display = "block";
   setTimeout(showSlides, 3000);
 }
 
-var weddingDate = new Date("2027-12-31T00:00:00").getTime();
+function yesClicked() {
+  var ring = document.createElement("div");
+  ring.className = "ring";
+  ring.innerHTML = "💍";
+  document.body.appendChild(ring);
 
-setInterval(function() {
-  var now = new Date().getTime();
-  var distance = weddingDate - now;
+  setTimeout(() => {
+    alert("💍 She Said YESSSSS ❤️🔥 Forever Together 💕");
+  }, 1500);
+}
 
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-  document.getElementById("countdown").innerHTML =
-    "❤️ " + days + " Days 💖 " + hours + " Hours 💕 " + minutes + " Minutes ❤️";
-}, 1000);
+function moveNo() {
+  var btn = document.getElementById("noBtn");
+  btn.style.position = "absolute";
+  btn.style.top = Math.random()*400 + "px";
+  btn.style.left = Math.random()*400 + "px";
+}
 
 setInterval(function() {
   var heart = document.createElement("div");
@@ -262,25 +264,16 @@ setInterval(function() {
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.fontSize = (Math.random() * 20 + 20) + "px";
   document.body.appendChild(heart);
-  setTimeout(function() { heart.remove(); }, 6000);
+  setTimeout(() => heart.remove(), 6000);
 }, 400);
 
-function loveExplosion() {
-  document.getElementById("surpriseMessage").style.display = "block";
-
-  for (let i = 0; i < 30; i++) {
-    let boom = document.createElement("div");
-    boom.innerHTML = "💖";
-    boom.style.position = "fixed";
-    boom.style.left = "50%";
-    boom.style.top = "50%";
-    boom.style.fontSize = (Math.random() * 30 + 20) + "px";
-    boom.style.transform = "translate(-50%, -50%)";
-    boom.style.animation = "explode 1s ease-out forwards";
-    document.body.appendChild(boom);
-    setTimeout(() => boom.remove(), 1000);
-  }
-}
+var weddingDate = new Date("2027-12-31T00:00:00").getTime();
+setInterval(function() {
+  var now = new Date().getTime();
+  var distance = weddingDate - now;
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  document.getElementById("countdown").innerHTML = "❤️ " + days + " Days ❤️";
+}, 1000);
 </script>
 
 </body>
